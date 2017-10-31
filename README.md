@@ -1,6 +1,6 @@
 # weather App
 <h2> Simple weather App by Vue.js </h2>
-<br/>
+
 <strong>Tech Used:</strong>
 <br/>
 <p>Just Vue.js..</p>
