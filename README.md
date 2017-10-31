@@ -1,8 +1,8 @@
 # weather App
 <br/>
-> ## Simple weather App by Vue.js
+<h2> Simple weather App by Vue.js </h2>
 <br/>
-### Tech Used:
+<strong>Tech Used:</strong>
 <br/>
 <p>Just Vue.js..</p>
 
