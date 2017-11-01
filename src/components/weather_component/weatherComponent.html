@@ -1,0 +1,92 @@
+<div id="w-container">
+  <!--close-btn-->
+  <button class="closeweather" :class="{'c-squeezout':!searching.val}" type="button" @click="closeWeather()" title="close" :disabled="!searching.val"></button>
+<!--menu-list-->
+  <transition name="list-slide" mode="out-in">
+    <ul class="list-btns" ref="w_menu_list" v-show="searching.val">
+      <li :class="{'active': mapping}" :li-title="mapping ? 'hide Map':'show Map'">
+        <button type="button" class="map-btn" :class="{'btn-after-enter': mapping,'btn-after-leave': !mapping}" @click="showMap()">
+            <i class="fa fa-map-marker" :class="{'map-btn-icon-enter': mapping,'map-btn-icon-leave': !mapping}" aria-hidden="true"></i>
+        </button>
+      </li>
+      <li :class="{'active': tomorrow}" :li-title="tomorrow ? 'today':'tomorrow'">
+        <button type="button" class="tomorrow-btn" :class="{'tod-tom-after-enter': tomorrow,'tod-tom-after-leave': !tomorrow}" @click="showTomorrow()">
+          <i class="wi wi-sunrise" :class="{'tod-tom-icon-enter': tomorrow,'tod-tom-icon-leave': !tomorrow}"></i>
+        </button>
+      </li>
+    </ul>
+  </transition>
+<!--wrapper-comp-->
+  <transition name="wrapper-component" mode="in-out">
+    <div id="w-wrapper" v-show="searching.val">
+      <!--left-slide-->
+      <transition name="l-slide" mode="out-in">
+        <div class="l-info" ref="l_info" v-show="searching.val">
+          <div class="img-wrapper">
+            <object ref="w_icon" class="ltl-fade-anime" width="" height="" type="image/svg+xml" :data="tomorrow ? wData.tomorrow.wStateAbbr : wData.today.wStateAbbr"></object>
+            <img ref="c_pic" src="" alt="" />
+          </div>
+        </div>
+      </transition>
+      <!--right-slide-->
+      <transition name="r-slide" mode="out-in">
+        <div class="r-info" :class="{'tod-tom-in-active':tomorrow,'tod-tom-out-active':!tomorrow}" v-show="searching.val">
+          <!--ttl-->
+          <div class="title">
+            <span class="side-label" :class="{'squeez': tomorrow,'squeezback': !tomorrow}" title="label">{{tomorrow ? 'Tomorrow' : 'Today'}}</span>
+            <div class="ttl">
+              <span><strong title="city">{{tomorrow ? wData.today.city : wData.tomorrow.city | capitalize}}</strong></span>
+              <small>{{tomorrow ? gettomorrow : gettoday}} | <cite>{{tomorrow ? wData.tomorrow.date : wData.today.date | reverseDate}}</cite></small>
+            </div>
+          </div>
+          <!--state-->
+          <div class="state">
+            <p>{{tomorrow ? wData.tomorrow.wStateName : wData.today.wStateName}}</p>
+            <span><object width="50" height="35" type="image/svg+xml" :data="tomorrow ? wData.tomorrow.wStateAbbr : wData.today.wStateAbbr"></object></span>
+          </div>
+          <!--min-max-->
+          <div class="min-max">
+            <!--switch-btn-->
+            <div class="temp-switch">
+              <i class="wi" :class="{'wi-fahrenheit':f_checked,'wi-celsius':!f_checked}"></i>
+              <label class="f-c">
+                <input type="checkbox" name="switch" v-model="f_checked" value="">
+                <span class="checker"></span>
+              </label>
+            </div>
+            <!--min-max-ctx-->
+            <p>
+              <strong>
+                <span>{{f_checked ? minC2F : tomorrow ? wData.tomorrow.min_temp : wData.today.min_temp}}</span>
+                <i class="wi" :class="{'wi-fahrenheit':f_checked,'wi-celsius':!f_checked}"></i>
+                <i class="wi wi-direction-down" title="min"></i>
+              </strong>
+              &nbsp;/&nbsp;
+              <strong>{{f_checked ? maxC2F : tomorrow ? wData.tomorrow.max_temp: wData.today.max_temp}} 
+                <i class="wi" :class="{'wi-fahrenheit':f_checked,'wi-celsius':!f_checked}"></i>
+                <i class="wi wi-direction-up" title="max"></i>
+              </strong>
+            </p>
+            <!--thermo-->
+            <i class="wi wi-thermometer" :class="{'i-checked': f_checked}" title="temp"></i>
+          </div>
+          <!--humidity-->
+          <div class="humidity">
+            <p title="humidity">{{tomorrow ? wData.tomorrow.humidity : wData.today.humidity}}</p> 
+            <i class="wi wi-humidity" title="humidity"></i>
+          </div>
+          <!--wind-->
+          <div class="wind">
+            <p title="wind speed">{{tomorrow ? wData.tomorrow.wind_speed : wData.today.wind_speed}}</p> 
+            <i class="wi wi-strong-wind" title="wind speed"></i>
+          </div>
+        </div> <!--rihgt-slide-end-->
+      </transition> <!--rihgt-slide-transition-end-->
+    </div> <!--w-wrapper-end-->
+  </transition> <!--wrapper-comp-end-->
+<!--map-->
+  <transition name="map-component" mode="out-in">
+    <map-component :lattLong="wData.latt_long" v-show="mapping" :mapping="mapping">
+    </map-component>
+  </transition>
+</div>

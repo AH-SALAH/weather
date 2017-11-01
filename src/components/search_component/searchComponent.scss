@@ -1,0 +1,80 @@
+@import "../../assets/styles/variables";
+@import "../../assets/styles/mixins";
+
+#search-component{
+    color: $secondary_color;
+    width: 100%;
+    max-width: 50%;
+    height: auto;
+    padding: 10px;
+    margin: 0 auto;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    cursor: auto;
+    @include transition(all 0.5s cubic-bezier(0.5,-0.3,0,1) );
+
+    @include media(S){
+        max-width: 100%;
+    }
+
+    .search-component-enter-active{
+        @include animation(s-slide-fade,1.5s cubic-bezier(0.3,-0.5,0,1) forwards);
+    }
+    .search-component-leave-active{
+        @include animation(s-slide-fade,1.5s cubic-bezier(0.5,-0.5,0,1) forwards reverse 1.6s);
+    }
+        @include keyframes (s-slide-fade) {
+            0%{@include translate(0,-30vh);}
+            100%{@include translate(0,0);}
+        }
+    /** ----------------------------*/
+    & .search-group{
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        @include transition(all 0.5s cubic-bezier(0.5,-0.3,0,1) );
+
+        &.blur{
+            @include opacity(0.5);
+            pointer-events: none;
+            @include translate(0,-30vh);
+        }
+
+        &.back{
+            -webkit-transition-delay: 2s;
+            transition-delay: 2s;
+        }
+
+        & input{
+            width: 100%;
+            min-height: 30px;
+            padding: 7px 15px;
+            text-align: center;
+            font-size: 1.3em;
+            @include border(0px solid #daa520);
+            @include border-radius(50px);
+            @include filter(drop-shadow(0 0 3px rgba(218, 165, 32,1)));
+            @include transition(all 0.3s cubic-bezier(0.5,-0.3,0,1));
+
+            &:focus{
+                @include box-shadow(0px 0px 4px 1px inset rgba(0, 0, 0,1));
+            }
+
+            & + i{
+                position: absolute;
+                right: 10px;
+                top: 8px;
+                font-size: 1.4em;
+                color: rgba(218, 165, 32,1);
+            }
+        }
+    }
+
+    & h1{
+        color: #fff;
+    }
+}
