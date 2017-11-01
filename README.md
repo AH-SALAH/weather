@@ -1,7 +1,6 @@
 # Weather App v1.0
 <h3> Simple weather App by Vue.js </h3>
 <strong>- Tech Used:</strong>
-<br/>
 - Just Vue.js..
 
 ***
