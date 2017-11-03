@@ -26,14 +26,16 @@ module.exports = {
       },
       {
         test: /\.(scss|css)$/,
-        use: [{loader: "style-loader"}, 
-        {loader: "css-loader"}, 
-        {loader: 'postcss-loader', options: { parser: 'sugarss',exec: true }},
-        {loader: "sass-loader",
+        use: [
+          {loader: "style-loader"}, 
+          {loader: "css-loader"}, 
+          {loader: 'postcss-loader', options: { parser: 'sugarss',exec: true }},
+          {loader: "sass-loader",
             // options: {
             //     includePaths: ["absolute/path/a", "absolute/path/b"]
             // }
-        }]
+          }
+        ]
       },
       {
         test: /\.js$/,

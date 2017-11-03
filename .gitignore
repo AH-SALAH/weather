@@ -1,7 +1,7 @@
 .DS_Store
 node_modules/
 dist/
-.gitignore
+#.gitignore
 npm-debug.log
 yarn-error.log
 
