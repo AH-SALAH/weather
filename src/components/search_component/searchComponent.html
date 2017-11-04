@@ -1,0 +1,8 @@
+<div id="search-component">
+      <div class="search-group" :class="{'blur': searching.val,'back': !searching.val}">
+            <input ref="search_input" type="search" value="" v-model.trim="query"  placeholder="Search Cities.." name="search" @keyup.enter="submitting" :disabled="searching.val" autofocus="true">
+            <i class="fa fa-search"></i>
+      </div>
+      <my-toast v-if="err.val" position="top-center" danger>{{ err.msg }}</my-toast>
+      <my-toast v-if="apiimgerr.val" position="top-center" danger>{{ apiimgerr.msg }}</my-toast>
+</div>

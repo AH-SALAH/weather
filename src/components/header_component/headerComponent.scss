@@ -1,0 +1,13 @@
+@import "../../assets/styles/variables";
+@import "../../assets/styles/mixins";
+
+// =====================================
+
+#header-component{
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   justify-content: flex-start;
+   align-self: flex-start;
+   cursor: auto;
+}
