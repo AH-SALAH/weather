@@ -2,7 +2,7 @@
 node_modules/
 dist/
 #.gitignore
-.gitattributes
+#.gitattributes
 npm-debug.log
 yarn-error.log
 
