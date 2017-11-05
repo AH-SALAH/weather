@@ -1,6 +1,6 @@
 # Weather App v1.0
 
-<h3> Simple vue.js Weather App, ..inspired by Al-jazeera..</h3>
+> <h3> Simple vue.js Weather App, ..inspired by Al-jazeera..</h3>
 
 - [App](http://weather.is-great.org)
 
@@ -31,6 +31,7 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
+```
 
 ***
 License: [![CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg "CC")](https://creativecommons.org/licenses/by-sa/4.0/)
