@@ -1,9 +1,6 @@
 # Weather App v1.0
-<<<<<<< HEAD
+
 <h3> Simple vue.js Weather App, ..inspired by Al-jazeera</h3>
-=======
-<h3> Simple weather App </h3>
->>>>>>> fd09578d675fb1e120e880a60c2b0a8b0ef6e106
 
 - [App](http://weather.is-great.org)
 

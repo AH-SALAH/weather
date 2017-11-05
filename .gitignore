@@ -1,10 +1,7 @@
 .DS_Store
 node_modules/
-<<<<<<< HEAD
 #dist/
-=======
 dist/
->>>>>>> fd09578d675fb1e120e880a60c2b0a8b0ef6e106
 #.gitignore
 npm-debug.log
 yarn-error.log
