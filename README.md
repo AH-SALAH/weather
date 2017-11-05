@@ -16,7 +16,8 @@
 - [wikipedia](https://en.wikipedia.org)
 - [metaweather](https://www.metaweather.com)
 
-**
+---
+
 ## Build Setup
 
 ``` bash
