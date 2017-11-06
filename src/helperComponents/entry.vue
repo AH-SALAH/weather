@@ -1,6 +1,6 @@
 <template>
    <div id='entry'>
-      <div class="entry-content">
+      <div class="entry-content" v-if="loaded">
             <slot name="entry-slot"></slot>
       </div>
    </div>
@@ -12,7 +12,13 @@ export default {
    name: 'entry',
    data () {
       return {
-
+            loaded: false
+      }
+   },
+   created() {
+         console.log("entry-comp: ",this,window.onload,this.loaded);
+      window.onload = () => {
+            this.loaded = !this.loaded;
       }
    },
 
