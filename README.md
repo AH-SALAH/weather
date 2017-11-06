@@ -1,6 +1,6 @@
 # :partly_sunny: Weather App :sun_with_face:
 
-> <h3> Simple vue.js Weather App, ..inspired by Al-jazeera..</h3>[Al Jazeera](https://upload.wikimedia.org/wikipedia/en/7/71/Aljazeera.svg "jz")
+> <h3> Simple vue.js Weather App, ..inspired by Al-jazeera..</h3>[!Al Jazeera](https://upload.wikimedia.org/wikipedia/en/7/71/Aljazeera.svg "jz")
 
 - [App](http://weather.is-great.org)
 
