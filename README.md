@@ -1,4 +1,4 @@
-# Weather App v1.0
+# :partly_sunny: Weather App
 
 > <h3> Simple vue.js Weather App, ..inspired by Al-jazeera..</h3>
 

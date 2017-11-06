@@ -29,7 +29,7 @@ module.exports = {
         use: [
           {loader: "style-loader"}, 
           {loader: "css-loader"}, 
-          {loader: 'postcss-loader', options: { parser: 'sugarss',exec: true }},
+          {loader: 'postcss-loader'},
           {loader: "sass-loader",
             // options: {
             //     includePaths: ["absolute/path/a", "absolute/path/b"]
