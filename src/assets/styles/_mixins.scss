@@ -22,7 +22,7 @@
 }
 
 @mixin bg-color-rgba($args...){
-	background:rgba($args...);
+	background-color:rgba($args...);
 }
 
 @mixin color-rgba($args...){
