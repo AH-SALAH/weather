@@ -16,9 +16,10 @@ export default {
       }
    },
    created() {
-         console.log("entry-comp: ",this,window.onload,this.loaded);
-      window.onload = () => {
-            this.loaded = !this.loaded;
+      document.onreadystatechange = () => {  
+            if (document.readyState === "complete") {
+                  this.loaded = !this.loaded;
+            }
       }
    },
 

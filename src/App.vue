@@ -169,8 +169,9 @@ export default {
         }).catch(error => {
           console.log("get img fileName err: ", error.message, error.headers);
           self.imgerr.msg = "Sorry,Something went wrong or your search is not correct..!";
-          self.imgerr.val = true;
-          self.searching.loading = false;
+          self.imgerr.val         = true;
+          self.searching.loading  = false;
+          self.initLoader         = false;
         });
 
       } getImageFileName(qwery);
@@ -187,7 +188,7 @@ export default {
           url: cors_api_url + req_url,
           transformResponse: (response) => {
             response = response.replace(/^\/\*\*\/\(/i, ''),
-              response = response.replace(/\)$/mi, '');
+            response = response.replace(/\)$/mi, '');
             if (typeof(response) == String) {
               response = JSON.parse(response);
             }
@@ -232,7 +233,8 @@ export default {
         }).catch(error => {
           console.log("get img link err: ", error.message, error.headers);
           // self.$refs.w_comp.$refs.c_pic.src = '';
-          self.searching.loading = false;
+          self.searching.loading  = false;
+          self.initLoader         = false;
         });
       }
 
@@ -257,6 +259,7 @@ export default {
               self.wData              = storage;
               self.searching.val      = true; //\\ show weather
               self.searching.loading  = false; // remove loading
+              self.initLoader         = false; // remove initloader
               history.pushState({ data: self.searching.val }, '', 'showweather'); //handle piece of router
 
               return false;
@@ -276,6 +279,7 @@ export default {
             self.imgerr.msg         = "Sorry,Something went wrong or WOEID didn't respond correctly..!";
             self.imgerr.val         = true;
             self.searching.loading  = false;
+            self.initLoader         = false;
           });
       }
 
@@ -284,7 +288,7 @@ export default {
       // get weather details from metaweather.com
       function getWeatherDetails(id) {
         let cors_api_url  = "https://cors-anywhere.herokuapp.com/",
-          req_url         = "https://www.metaweather.com/api/location/" + id + "/";
+            req_url       = "https://www.metaweather.com/api/location/" + id + "/";
 
         axios.get(cors_api_url + req_url)
           .then((response) => {
@@ -347,7 +351,8 @@ export default {
 
             self.searching.val = true; //\\ open weather
             history.pushState({ data: self.searching.val }, '', 'showweather'); // handle piece of router 
-            self.searching.loading = false; //remove loading
+            self.searching.loading  = false; //remove loading
+            self.initLoader         = false; //remove initloader
 
             console.log("data-response: success");
           })
@@ -357,6 +362,7 @@ export default {
             self.imgerr.msg         = "Sorry,Something went wrong or API didn't respond correctly..!";
             self.imgerr.val         = true;
             self.searching.loading  = false;
+            self.initLoader         = false;
           });
       }
 
