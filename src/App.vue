@@ -366,7 +366,7 @@ export default {
     this.enter = !this.enter; // = true
     // =========================================
     // chk for connection..
-    this.connection.msg = navigator.onLine ? 'Connection is Online..good! \n オンラインです。かっこいい。' : 'Connection is Offline..! please,reconnect.. \n オフラインです。。また連絡して下さい。。';
+    this.connection.msg = navigator.onLine ? 'Connection is Online..good! \n オンラインです。かっこいい。' : 'Connection is Offline..! please,reconnect.. \n オフラインです。。また連絡してみて下さい。。';
     this.connection.val = navigator.onLine ? true : false;
 
     if (navigator.onLine == false) {
