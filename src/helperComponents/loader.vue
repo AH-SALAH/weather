@@ -82,11 +82,11 @@ export default {
       & .st7{fill:none;stroke:#FF9900;stroke-width:5;stroke-miterlimit:10;}
 
       & .text {
-         @include translate(0,100%);
+         @include translate(0,100vh);
          @include animation(txt-slide,0.8s cubic-bezier(0.3,-0.3,0,1.3) forwards 1s);
 
          @include keyframes (txt-slide) {
-            from { @include opacity(0); @include translate(0,100%); }
+            from { @include opacity(0); @include translate(0,100vh); }
             to { @include opacity(1); @include translate(0,0); }
          }
       }
