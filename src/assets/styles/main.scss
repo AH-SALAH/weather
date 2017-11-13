@@ -32,7 +32,7 @@
 	box-sizing: border-box;
 
 	&:focus{
-		outline: 0 none;
+		outline: 0 none!important;
 	}
 }
 
@@ -110,11 +110,24 @@ html{
 					background: rgba(0,0,0,0.3);
 					background: radial-gradient(rgba(0, 0, 0, 0.3) 20%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.8) 100%);
 					background: -webkit-radial-gradient(rgba(0, 0, 0, 0.3) 20%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.8) 100%);
+					z-index: 1;
 				}
 
-				&.grayscale{
-					@include filter(grayscale(1));
+				& img {
+					max-width: 100%;
+					width: 100%;
+					height: 100%;
+					position: absolute;
+					@include transition(all 1.7s ease);
+					// display: none;
+					@include opacity(0);
+					visibility: hidden;
+
+					&.grayscale{
+						@include filter(grayscale(1));
+					}
 				}
+
 
 				& ~ *{
 					z-index: 1;
@@ -215,17 +228,20 @@ html{
 
 /** ----------------------------*/
 .bg-enter-active{
-	@include animation(bg,0.3s ease-in forwards);
+	@include animation(bg-enter,1s ease-in forwards);
 }
 .bg-leave-active{
-	@include animation(bg,0.3s ease-in forwards reverse);
+	@include animation(bg-leave,1s ease-in forwards);
 }
 
-@include keyframes (bg) {
-	0%{ @include opacity(0); }
-	100%{ @include opacity(1); }
+@include keyframes (bg-enter) {
+	0%{ @include opacity(0); visibility: hidden; }
+	100%{ @include opacity(1); visibility: visible; }
 }
-
+@include keyframes (bg-leave) {
+	0%{ @include opacity(1); visibility: visible; }
+	100%{ @include opacity(0); visibility: hidden; }
+}
 /** ----------------------------*/
 
 .entry-fade-enter{
@@ -236,7 +252,7 @@ html{
 }
 
 .entry-fade-leave-active{
-	@include animation(entry-fade,1s ease forwards reverse);
+	@include animation(entry-fade,1s ease forwards reverse 2s);
 }
 
 @include keyframes (entry-fade) {
