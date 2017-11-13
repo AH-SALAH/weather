@@ -1,9 +1,12 @@
 <template v-cloak>
   <div id="app">
+    <!--connection chk-->
+    <my-toast v-show="enter" position="top-right" :warning="!connection.val" :success="connection.val">{{ connection.val ? connection.msg+' &#10004;' : connection.msg+' &#9888;' }}</my-toast>
+
     <!--entry-comp-->
     <transition name="entry-fade" mode="out-in">
-      <entry v-if="enter">
-        <h1 slot="entry-slot">Weather</h1>
+      <entry v-show="enter" :enter="enter">
+        <!--<h1 slot="entry-slot">Weather</h1>-->
       </entry>
     </transition>
       <!--loader-comp-->
@@ -51,6 +54,7 @@ import searchComponent from './components/search_component/searchComponent.vue';
 import weatherComponent from './components/weather_component/weatherComponent.vue';
 import Myloader from './helperComponents/loader.vue';
 import entry from './helperComponents/entry.vue';
+import toast from './helperComponents/toast.vue';
 
 import axios from 'axios';
 
@@ -61,7 +65,8 @@ export default {
     'search-component': searchComponent,
     'weather-component': weatherComponent,
     'my-loader': Myloader,
-    'entry': entry
+    'entry': entry,
+    'my-toast': toast,
   },
   name: 'app',
   data() {
@@ -70,12 +75,15 @@ export default {
       enter: false,
       searching: { "val": false, "query": "", "loading": false },
       imgerr: { 'msg': '', 'val': false },
+      connection: { 'msg': '', 'val': false },
       wData: { //init data
         "latt_long": "30.049950,31.248600",
+        "city": "Tokyo",
+        "code": "JP",
+        "woeid": "435678",
         "today": {
-          "city": "Tokyo",
-          "woeid": "435678",
           "date": new Date().toLocaleDateString(),
+          "created": new Date(new Date().getDay() - 1).toLocaleDateString(),
           "max_temp": 25,
           "min_temp": 15,
           "wStateName": "Light Rain",
@@ -84,9 +92,8 @@ export default {
           "humidity": 70
         },
         "tomorrow": {
-          "city": "Tokyo",
-          "woeid": "435678",
           "date": new Date(new Date().getDay() + 1).toLocaleDateString(),
+          "created": new Date(new Date().getDay() - 1).toLocaleDateString(),
           "max_temp": 29,
           "min_temp": 24,
           "wStateName": "Light Rain",
@@ -218,7 +225,7 @@ export default {
             self.$refs.w_comp.$refs.c_pic.src = url;
             self.$refs.w_comp.$refs.c_pic.alt = ttl1;
             self.$refs.w_comp.$refs.c_pic.onload = function() {
-              // get the woeid here img file link success
+              // get the woeid here if img file link success
               getWOEID(qwery);
 
             }
@@ -250,18 +257,22 @@ export default {
           .then((response) => {
 
             let woe   = response.data.query.results.place[0].woeid,
-              created = response.data.query.created,
-              date    = created.slice(0, created.lastIndexOf("-") + 3),
+                ccode = response.data.query.results.place[0].country.code,
+              createdd = response.data.query.created,
+              created  = createdd.slice(0, createdd.lastIndexOf("-") + 3),
               storage = JSON.parse(localStorage.getItem('wData'));
 
+              // set country code
+              self.wData.code = ccode;
+
             // check if the queried data already stored in the locale storage. if so grab it instead of another quota
-            if (storage && storage.today.woeid == woe && storage.today.date == date) {
+            if (storage && storage.woeid == woe && storage.today.created == created) {
               self.wData              = storage;
               self.searching.val      = true; //\\ show weather
               self.searching.loading  = false; // remove loading
               self.initLoader         = false; // remove initloader
               history.pushState({ data: self.searching.val }, '', 'showweather'); //handle piece of router
-
+              console.log("storage-parsed: ");
               return false;
             } else {
               // delete the stroage to avoid any err caused by any new modification in the source of truth data
@@ -297,11 +308,14 @@ export default {
                 tomorrow  = response.data.consolidated_weather[1],
                 latt_long = response.data.latt_long;
 
-            self.wData.latt_long = latt_long;
+            // city data
+            self.wData.latt_long        = latt_long;
+            self.wData.city             = response.data.title.toLocaleLowerCase();
+            self.wData.woeid            = response.data.woeid;
+
             // today
-            self.wData.today.city       = response.data.title;
-            self.wData.today.woeid      = response.data.woeid;
             self.wData.today.date       = today.applicable_date;
+            self.wData.today.created    = today.created.slice(0, today.created.lastIndexOf("-") + 3);
             self.wData.today.max_temp   = Math.floor(today.max_temp);
             self.wData.today.min_temp   = Math.floor(today.min_temp);
             self.wData.today.wStateName = today.weather_state_name;
@@ -309,11 +323,9 @@ export default {
             self.wData.today.wind_speed = Math.floor(today.wind_speed) + " mph";
             self.wData.today.humidity   = today.humidity;
 
-
             // tomorrow
-            self.wData.tomorrow.city        = response.data.title;
-            self.wData.tomorrow.woeid       = response.data.woeid;
             self.wData.tomorrow.date        = tomorrow.applicable_date;
+            self.wData.tomorrow.created     = tomorrow.created.slice(0, tomorrow.created.lastIndexOf("-") + 3);
             self.wData.tomorrow.max_temp    = Math.floor(tomorrow.max_temp);
             self.wData.tomorrow.min_temp    = Math.floor(tomorrow.min_temp);
             self.wData.tomorrow.wStateName  = tomorrow.weather_state_name;
@@ -321,40 +333,15 @@ export default {
             self.wData.tomorrow.wind_speed  = Math.floor(tomorrow.wind_speed) + " mph";
             self.wData.tomorrow.humidity    = tomorrow.humidity;
 
-            let wData = {
-              "latt_long": latt_long,
-              "today": {
-                "city": response.data.title.toLowerCase(),
-                "woeid": response.data.woeid,
-                "date": today.applicable_date,
-                "max_temp": Math.floor(today.max_temp),
-                "min_temp": Math.floor(today.min_temp),
-                "wStateName": today.weather_state_name,
-                "wStateAbbr": "https://www.metaweather.com/static/img/weather/" + today.weather_state_abbr + ".svg",
-                "wind_speed": Math.floor(today.wind_speed) + " mph",
-                "humidity": today.humidity
-              },
-              "tomorrow": {
-                "city": response.data.title.toLowerCase(),
-                "woeid": response.data.woeid,
-                "date": tomorrow.applicable_date,
-                "max_temp": Math.floor(tomorrow.max_temp),
-                "min_temp": Math.floor(tomorrow.min_temp),
-                "wStateName": tomorrow.weather_state_name,
-                "wStateAbbr": "https://www.metaweather.com/static/img/weather/" + tomorrow.weather_state_abbr + ".svg",
-                "wind_speed": Math.floor(tomorrow.wind_speed) + " mph",
-                "humidity": tomorrow.humidity
-              }
-            }
             // save data into locale storage 
-            localStorage.setItem('wData', JSON.stringify(wData));
+            localStorage.setItem('wData', JSON.stringify(self.wData)/*JSON.stringify(wData)*/);
 
             self.searching.val = true; //\\ open weather
             history.pushState({ data: self.searching.val }, '', 'showweather'); // handle piece of router 
             self.searching.loading  = false; //remove loading
             self.initLoader         = false; //remove initloader
 
-            console.log("data-response: success");
+            console.log("w-details: success");
           })
           .catch(error => {
             console.log("get weather details err: ", error.message, error.headers);
@@ -375,9 +362,18 @@ export default {
     }
 
   },
-  created() {
-    this.enter = !this.enter;
+  created () {
+    this.enter = !this.enter; // = true
     // =========================================
+    // chk for connection..
+    this.connection.msg = navigator.onLine ? 'Connection is Online..good! \n オンラインです。かっこいい。' : 'Connection is Offline..! please,reconnect.. \n オフラインです。。また連絡して下さい。。';
+    this.connection.val = navigator.onLine ? true : false;
+
+    if (navigator.onLine == false) {
+      this.enter = true; 
+      return;
+    }
+    //================================
     // initially get geo ip & upon it get weather detailes
     let self = this;
 
@@ -388,8 +384,8 @@ export default {
       axios.get(cors_api_url + req_url)
         .then((response) => {
           self.grabAPI(response.data.city);
-          self.enter = !self.enter;
-          self.initLoader = !self.initLoader;
+          self.enter = !self.enter; // = false
+          // self.initLoader = !self.initLoader;
         })
         .catch(error => {
           console.log("get geo ip err: ", error.message, error.headers);
@@ -405,132 +401,140 @@ export default {
     // ============================================
     // get bg imgs
     function getImgs() {
-      // let cors_api_url  = "https://cors-anywhere.herokuapp.com/",
-      //   // cors_api_url = "http://anyorigin.com/go?url=",
-      //     req_url       = "https://picjumbo.com/api/v1/";
 
-    axios.get('https://picjumbo.com/api/v1/')
-      .then(function(response) {
-          let data    = response.data,
-              body    = document.getElementsByTagName("body")[0],
-              bg      = document.getElementById("bg"),
-              cat_url = [],
-              new_arr = [],
-              pics;
-
-            data.forEach(function(el, i) {
-              let cat = el.category,
-                  url = el.thumb_url;
-
-              if (cat.slug == "nature" && url.indexOf('1080x720') > -1) {
-                cat_url.push({ "i": i, "url": el.thumb_url });
-                return new_arr = cat_url.slice(0, cat_url.length >= 11 ? 11 : cat_url.length);
-              }
-            });
-
-          if (new_arr.length > 0) {
-              //  chk if imgs already there under any circumstances & del'm 1st 
-                if (document.getElementsByClassName('bgimgs').length > 0) {
-                  let coll = document.getElementsByClassName('bgimgs'),
-                      j = 0;
-
-                    for(j; j < coll.length; ++j) {
-                      coll[j].parentNode.removeChild(coll[j]);
-                    }
-                }
-                
-
-              new_arr.forEach(function(obj, i) {
-                let imgs  = document.createElement('img'),
-                    css   = imgs.style.display = 'none',
-                    cls   = imgs.setAttribute('class', 'bgimgs img_'+ i +''),
-                    src   = imgs.setAttribute('src', obj.url);
-                    body.appendChild(imgs);
-                });
-
-              pics = document.getElementsByClassName('bgimgs');
-
-              if (pics.length > 0 && pics != undefined) {
+      // fade img carousel v1.0
+      const miniCarousel = {
+              coll: Array || HTMLCollection || NodeList,
+              dur: Number || null ? 10000 : Number,
+              init: (coll = miniCarousel.coll,dur = miniCarousel.dur) => {
                 let i   = 0,
                   loop  = setInterval(function() {
-                      if (i >= pics.length) i = 0;
-                      let sorc = pics[i].getAttribute('src');
-                          setTimeout(function() {
-                            bg.classList.add('bg-enter-active');
-                            bg.classList.remove('bg-leave-active');
-                            // bg.style.display = 'flex';
-                          }, 100);
+                    // if last child reached return to 0
+                      if (i >= coll.length) {
+                          i = 0;
+                          coll[i].parentNode.lastChild.classList.remove('bg-enter-active');
+                          coll[i].parentNode.lastChild.classList.add('bg-leave-active');
+                        }
 
-                          bg.style.background = 'rgba(0,0,0,0.' + i + ') url("' + sorc + '") no-repeat fixed center center/cover';
+                          // after 1st img re-hide previous
+                        if(i > 0) {
+                          coll[i].previousSibling.classList.remove('bg-enter-active');
+                          coll[i].previousSibling.classList.add('bg-leave-active');
+                        }
+                        // show img
+                        coll[i].classList.remove('bg-leave-active');
+                        coll[i].classList.add('bg-enter-active');
 
-                          bg.classList.add('bg-leave-active');
-                          bg.classList.remove('bg-enter-active');
-                          // bg.style.display = 'none';
+                          i++ //inc
+                      }, dur);
+              } //init.xxx
+            }
+            // ----------------------------//
 
-                          i++
-                      }, 10000);
+      axios.get('https://picjumbo.com/api/v1/')
+        .then(function(response) {
+            let data    = response.data,
+                body    = document.getElementsByTagName("body")[0],
+                bg      = document.getElementById("bg"),
+                cat_url = [],
+                new_arr = [],
+                pics;
+                // handle & filter the data
+              data.forEach(function(el, i) {
+                let cat = el.category,
+                    url = el.thumb_url;
 
-                  let done = [],
-                      j = 0;
-                      for (j; j < pics.length; j++) {
-                          pics[j].onload = function(val) {
-                            done.push(val);
-                              if (pics.length == done.length) {
-                                self.initLoader = !self.initLoader;
-                                setTimeout(function(){
-                                  // do getGeo here after bg has been loaded
-                                  getGeo();
-                                },6000);
-                              }
-                          }                
-                      }
+                if (cat.slug == "nature" && url.indexOf('1080x720') > -1) {
+                  cat_url.push({ "i": i, "url": el.thumb_url });
+                  return new_arr = cat_url.slice(0, cat_url.length >= 11 ? 11 : cat_url.length);
+                }
+              });
 
-              }
+            if (new_arr.length > 0) {
+                //  4 1st time chk if imgs already there under any circumstances & del'm 1st to avoid conflicts
+                  if (document.getElementsByClassName('bgimgs').length > 0) {
+                    let coll = document.getElementsByClassName('bgimgs').parentNode.innerHTML = '';
+                  }
+                  
+                  // forEach url in new_arr create img & setAttrs
+                  // then append to targeted tag
+                new_arr.forEach(function(obj, i) {
+                  let imgs  = document.createElement('img'),
+                      // css   = imgs.style.display = 'none',
+                      cls   = imgs.setAttribute('class', 'bgimgs img_'+ i +''),
+                      d_src = imgs.setAttribute('src', obj.url);
 
-          } else {
-            // console.log("No images with this criteria");
-            getGeo();
-            self.initLoader = false;
-          }
+                      bg.appendChild(imgs);
+                      self.initLoader = !self.initLoader; // = true
+                  });
+                  
+                  // get those elms by class after create
+                pics = bg.getElementsByClassName('bgimgs');
+                // chk if those imgs there
+                if (pics.length > 0 && pics != undefined) {
+                  // do carousel effect
+                  miniCarousel.init(pics);
+
+                  // getGeo after imgs loaded
+                  for(let j = 0; j < pics.length; j++){
+                    pics[j].onload = () => {
+                      if(j == pics.length-1) getGeo();
+                    }
+                  }
+
+                }
+
+            } else {
+              // console.log("No images with this criteria");
+              // do the job even if there r no API imgs grapped
+              getGeo();
+              // self.initLoader = false;
+            }
 
 
-      }).catch(error => {
-        console.log("get bg imgs err: ", error.message);
-        // if there are any err getting bg do getGeo any way..
-        getGeo();
-        self.initLoader = false;
-        // if bg err set a static bg instead as a fallback..
-        document.getElementById("bg").style.background = 'rgba(0,0,0,0.7) url("./assets/imgs/umbrella.jpg") no-repeat fixed center center/cover';
-      });
+        }).catch(error => {
+          console.log("get bg imgs err: ", error.message);
+          // if there are any err getting bg do getGeo any way..
+          getGeo();
+          self.initLoader = false;
+          // if bg err set a static bg instead as a fallback..
+          document.getElementById("bg").style.background = 'rgba(0,0,0,0.7) url("./assets/imgs/umbrella.jpg") no-repeat fixed center center/cover';
+        });
 
     } getImgs(); //getImgs()\\
 
   },
   updated() {
     // handle router event
-    window.onpopstate = () => {
-      let chk = location.pathname.toString().trim().toLowerCase().replace(/[^a-zA-Z0-9/]/gi, '').lastIndexOf('showweather') > -1;
-      if (history.state && history.state.data == true && chk == 1) {
-        this.searching.val = true;
-      } else {
-        this.searching.val = false;
+    const pop_state = () => {
+      window.onpopstate = () => {
+        let chk = location.pathname.toString().trim().toLowerCase().replace(/[^a-zA-Z0-9/]/gi, '').lastIndexOf('showweather') > -1;
+        if (history.state && history.state.data == true && chk == 1) {
+          this.searching.val = true;
+        } else {
+          this.searching.val = false;
+        }
       }
     }
+    pop_state();
 // =================================
-  let qw  = this.wData.today.city.toString().charAt(0).toLocaleUpperCase() + this.wData.today.city.slice(1),
-      wiz = this.wData.today.wStateAbbr ?  this.wData.today.wStateAbbr : this.wData.tomorrow.wStateAbbr;
+// get a dyn title
+    const dyn_ttl = () => {
+        let qw  = this.wData.city.toString().charAt(0).toLocaleUpperCase() + this.wData.city.slice(1),
+            wiz = this.wData.today.wStateAbbr ?  this.wData.today.wStateAbbr : this.wData.tomorrow.wStateAbbr;
 
-    // dynamic doc title
-    if (this.searching.val == true) {
-        if(qw != ''){
-          document.title = ' Weather | ' + qw;
-          // document.head.querySelector('meta[name=description]').content = 'New Description';
-          document.head.querySelector('link[rel=icon]').href = wiz;
-        }
-    }else{
-      document.title = 'Weather';          
-    }
-
+          // dynamic doc title
+          if (this.searching.val == true) {
+              if(qw != ''){
+                document.title = ' Weather | ' + qw;
+                // document.head.querySelector('meta[name=description]').content = 'New Description';
+                document.head.querySelector('link[rel=icon]').href = wiz;
+              }
+          }else{
+            document.title = 'Weather';          
+          }
+      }
+      dyn_ttl();
   },
 
 };
