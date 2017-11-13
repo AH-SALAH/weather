@@ -4,12 +4,12 @@
 <!--menu-list-->
   <transition name="list-slide" mode="out-in">
     <ul class="list-btns" ref="w_menu_list" v-show="searching.val">
-      <li :class="{'active': mapping}" :li-title="mapping ? 'hide Map':'show Map'">
+      <li :class="{'active': mapping,'conditional': mapping}" :li-title="mapping ? ' Hide Map \n マップをハイド':' Show Map \n マップを見せる'">
         <button type="button" class="map-btn" :class="{'btn-after-enter': mapping,'btn-after-leave': !mapping}" @click="showMap()">
             <i class="fa fa-map-marker" :class="{'map-btn-icon-enter': mapping,'map-btn-icon-leave': !mapping}" aria-hidden="true"></i>
         </button>
       </li>
-      <li :class="{'active': tomorrow}" :li-title="tomorrow ? 'today':'tomorrow'">
+      <li :class="{'active': tomorrow,'conditional': tomorrow}" :li-title="tomorrow ? ' Today \n 今日':' Tomorrow \n 明日'">
         <button type="button" class="tomorrow-btn" :class="{'tod-tom-after-enter': tomorrow,'tod-tom-after-leave': !tomorrow}" @click="showTomorrow()">
           <i class="wi wi-sunrise" :class="{'tod-tom-icon-enter': tomorrow,'tod-tom-icon-leave': !tomorrow}"></i>
         </button>
@@ -35,7 +35,7 @@
           <div class="title">
             <span class="side-label" :class="{'squeez': tomorrow,'squeezback': !tomorrow}" title="label">{{tomorrow ? 'Tomorrow' : 'Today'}}</span>
             <div class="ttl">
-              <span><strong title="city">{{tomorrow ? wData.today.city : wData.tomorrow.city | capitalize}}</strong></span>
+              <span><strong title="city">{{wData.city | capitalize}}</strong>, <small>{{wData.code}}</small></span>
               <small>{{tomorrow ? gettomorrow : gettoday}} | <cite>{{tomorrow ? wData.tomorrow.date : wData.today.date | reverseDate}}</cite></small>
             </div>
           </div>
