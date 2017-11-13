@@ -50,6 +50,7 @@ export default {
       if (this.position == 'top-left') {
          this.$el.style.alignSelf = 'flex-start';
          this.$el.style.top = '20px';
+         this.$el.style.left = '20px';
          if (!this.$el.classList.contains('left-in')) {
                this.$el.classList.remove('left-out');
                this.$el.classList.add('left-in');
@@ -63,6 +64,7 @@ export default {
       }else if (this.position == 'top-right') {
          this.$el.style.alignSelf = 'flex-end';
          this.$el.style.top = '20px';
+         this.$el.style.right = '20px';
          if (!this.$el.classList.contains('right-in')) {
                this.$el.classList.remove('right-out');
                this.$el.classList.add('right-in');
@@ -89,6 +91,7 @@ export default {
       } else if (this.position == 'bottom-left') {
          this.$el.style.alignSelf = 'flex-start';
          this.$el.style.bottom = '20px';
+         this.$el.style.left = '20px';
          if (!this.$el.classList.contains('left-in')) {
                this.$el.classList.remove('left-out');
                this.$el.classList.add('left-in');
@@ -102,6 +105,7 @@ export default {
       } else if (this.position == 'bottom-right') {
          this.$el.style.alignSelf = 'flex-end';
          this.$el.style.bottom = '20px';
+         this.$el.style.right = '20px';
          if (!this.$el.classList.contains('right-in')) {
                this.$el.classList.remove('right-out');
                this.$el.classList.add('right-in');
@@ -164,6 +168,8 @@ export default {
    background: rgba(0, 0, 0, 0.7);
    @include border-radius(50px);
    @include box-shadow(0 0 3px 0px rgba(0,0,0,0.7));
+   animation-delay: 4s;
+   @include opacity(0);
 
    // ====================== top-center
    &.top-center-in{
@@ -243,6 +249,7 @@ export default {
    & > *{
       margin: 0 auto;
       text-align: center;
+      white-space: pre;
    }
 
 }

@@ -100,6 +100,10 @@ html{
 				@include scale(1.2);
 				@include transition(all 1.7s ease);
 
+				&.grayscale{
+					@include filter(grayscale(1));
+				}
+
 				&:before{
 					content: '';
 					position: absolute;
@@ -123,9 +127,6 @@ html{
 					@include opacity(0);
 					visibility: hidden;
 
-					&.grayscale{
-						@include filter(grayscale(1));
-					}
 				}
 
 
