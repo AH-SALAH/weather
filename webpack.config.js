@@ -18,45 +18,47 @@ module.exports = {
             // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
             // the "scss" and "sass" values for the lang attribute to the right configs here.
             // other preprocessors should work out of the box, no loader config like this necessary.
-            'scss': 'vue-style-loader!style-loader!css-loader!sass-loader',
-            'sass': 'vue-style-loader!style-loader!css-loader!sass-loader?indentedSyntax'
+            'scss': 'vue-style-loader!style-loader!css-loader!postcss-loader!sass-loader',
+            'sass': 'vue-style-loader!style-loader!css-loader!postcss-loader!sass-loader?indentedSyntax'
           }
           // other vue-loader options go here
         }
       },
-      {
-        test: /\.(scss|css)$/,
-        use: [
-          {loader: "style-loader"}, 
-          {loader: "css-loader"}, 
-          {loader: 'postcss-loader'},
-          {loader: "sass-loader",
-            // options: {
-            //     includePaths: ["absolute/path/a", "absolute/path/b"]
-            // }
-          }
-        ]
-      },
+      // {
+      //   test: /\.(scss|css)$/,
+      //   use: [
+      //     {loader: "style-loader"}, 
+      //     {loader: "css-loader"}, 
+      //     {loader: 'postcss-loader'},
+      //     {loader: "sass-loader",
+      //       // options: {
+      //       //     includePaths: ["absolute/path/a", "absolute/path/b"]
+      //       // }
+      //     }
+      //   ]
+      // },
       {
         test: /\.js$/,
         loader: 'babel-loader',
         exclude: /node_modules/
       },
       {
-        test: /\.(png|jpe?g|gif)$/,
+        test: /\.(png|jpe?g|gif|svg)$/,
         loader: 'file-loader',
         options: {
-          name: '[name].[ext]?[hash]'
+          name: '[path][name].[ext]?[hash]',
+          publicPath: 'dist/',
+          // outputPath: 'dist/img/',
         }
       },
       // {
       //   test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
       //   loader: 'url?limit=10000&mimetype=image/svg+xml'
       // },
-      { 
-        test: /\.(woff|woff2|eot|ttf|svg)$/, 
-        loader: 'file-loader?limit=100000' 
-      }
+      // { 
+      //   test: /\.(woff|woff2|eot|ttf|svg)$/, 
+      //   loader: 'file-loader?limit=100000' 
+      // }
     ]
   },
   resolve: {
