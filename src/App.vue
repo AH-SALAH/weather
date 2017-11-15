@@ -366,7 +366,7 @@ export default {
     this.enter = !this.enter; // = true
     // =========================================
     // chk for connection..
-    this.connection.msg = navigator.onLine ? 'Connection is Online..good! \n オンラインです。かっこいい。' : 'Connection is Offline..! please,reconnect.. \n オフラインです。。また連絡してみて下さい。。';
+    this.connection.msg = navigator.onLine ? 'Connection is Online..good! \n オンラインです。かっこいい。(^_-)' : 'Connection is Offline..! please,reconnect.. \n オフラインです。。また連絡してみて下さい。。(#-#)';
     this.connection.val = navigator.onLine ? true : false;
 
     if (navigator.onLine == false) {
@@ -468,7 +468,7 @@ export default {
                       self.initLoader = !self.initLoader; // = true
                   });
                   
-                  // get those elms by class after create
+                // get those elms by class after create
                 pics = bg.getElementsByClassName('bgimgs');
                 // chk if those imgs there
                 if (pics.length > 0 && pics != undefined) {
@@ -498,7 +498,7 @@ export default {
           getGeo();
           self.initLoader = false;
           // if bg err set a static bg instead as a fallback..
-          document.getElementById("bg").style.background = 'rgba(0,0,0,0.7) url("./assets/imgs/umbrella.jpg") no-repeat fixed center center/cover';
+          document.getElementById("bg").style.background = 'rgba(0,0,0,0.7) url("dist/src/assets/imgs/umbrella.jpg") no-repeat fixed center center/cover';
         });
 
     } getImgs(); //getImgs()\\
