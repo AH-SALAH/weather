@@ -1,7 +1,9 @@
 <template>
-   <div id="my-toast">
-      <p><slot></slot></p>
-   </div>
+  <transition :name="pos" mode="out-in">
+    <div :class="mr" v-if="show" key="pos">
+        <p><slot></slot></p>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -41,94 +43,106 @@ export default {
    },
    data () {
       return {
+         mr: 'my-toast-'+(Math.random()*3).toString().slice(2,8),
+         pos: '',
+         dur: Number(this.time),
          show: true
       }
    },
    mounted () {
+
       this.$el.style.fontSize = this.fontSize;
 
       if (this.position == 'top-left') {
+         this.pos = 'left-in';
          this.$el.style.alignSelf = 'flex-start';
          this.$el.style.top = '20px';
          this.$el.style.left = '20px';
-         if (!this.$el.classList.contains('left-in')) {
-               this.$el.classList.remove('left-out');
-               this.$el.classList.add('left-in');
-            }
+
          setTimeout( () => {
-            if (!this.$el.classList.contains('left-out')) {
-               this.$el.classList.remove('left-in');
-               this.$el.classList.add('left-out');
-            }
+          this.show = !this.show;
          }, Number(this.time));
+
       }else if (this.position == 'top-right') {
+         this.pos = 'right-in';
          this.$el.style.alignSelf = 'flex-end';
          this.$el.style.top = '20px';
          this.$el.style.right = '20px';
-         if (!this.$el.classList.contains('right-in')) {
-               this.$el.classList.remove('right-out');
-               this.$el.classList.add('right-in');
-            }
+        //  if (!this.$el.classList.contains('right-in-enter-active')) {
+        //        this.$el.classList.remove('right-out-enter-active');
+        //        this.$el.classList.add('right-in-enter-active');
+        //     }
+            // else{
+            //   this.$el.classList.remove('right-in-enter-active');
+            //    this.$el.classList.add('right-out-enter-active');
+            // }
          setTimeout( () => {
-            if (!this.$el.classList.contains('right-out')) {
-               this.$el.classList.remove('right-in');
-               this.$el.classList.add('right-out');
-            }
+          //  this.pos = 'right-out';
+          //  this.$el.className = 'my-toast-'+(Math.random()*3).toString().slice(2,8);
+           this.show = !this.show;
+            // if (!this.$el.classList.contains('right-out-enter-active')) {
+            //    this.$el.classList.remove('right-in-enter-active');
+            //    this.$el.classList.add('right-out-enter-active');
+            // }
+            // else{
+            //    this.$el.classList.remove('right-out-enter-active');
+            //    this.$el.classList.add('right-in-enter-active');
+            // }
          }, Number(this.time));
       }else if (this.position == 'bottom-center') {
+         this.pos = 'bottom-center-in';
          this.$el.style.alignSelf = 'center';
          this.$el.style.bottom = '20px';
-         if (!this.$el.classList.contains('bottom-center-in')) {
-               this.$el.classList.remove('bottom-center-out');
-               this.$el.classList.add('bottom-center-in');
-            }
+
          setTimeout( () => {
-            if (!this.$el.classList.contains('bottom-center-out')) {
-               this.$el.classList.remove('bottom-center-in');
-               this.$el.classList.add('bottom-center-out');
-            }
+          this.show = !this.show;
          }, Number(this.time));
+
       } else if (this.position == 'bottom-left') {
+         this.pos = 'left-in';
          this.$el.style.alignSelf = 'flex-start';
          this.$el.style.bottom = '20px';
          this.$el.style.left = '20px';
-         if (!this.$el.classList.contains('left-in')) {
-               this.$el.classList.remove('left-out');
-               this.$el.classList.add('left-in');
-            }
+        //  if (!this.$el.classList.contains('left-in-enter-active')) {
+        //        this.$el.classList.remove('left-out-enter-active');
+        //        this.$el.classList.add('left-in-enter-active');
+        //     }
+            // else{
+            //    this.$el.classList.remove('left-in-enter-active');
+            //    this.$el.classList.add('left-out-enter-active');
+            // }
          setTimeout( () => {
-            if (!this.$el.classList.contains('left-out')) {
-               this.$el.classList.remove('left-in');
-               this.$el.classList.add('left-out');
-            }
+          //  this.pos = 'left-out';
+          //  this.$el.className = 'my-toast-'+(Math.random()*3).toString().slice(2,8);
+          this.show = !this.show;
+            // if (!this.$el.classList.contains('left-out-enter-active')) {
+            //    this.$el.classList.remove('left-in-enter-active');
+            //    this.$el.classList.add('left-out-enter-active');
+            // }
+            // else{
+            //    this.$el.classList.remove('left-out-enter-active');
+            //    this.$el.classList.add('left-in-enter-active');
+            // }
          }, Number(this.time));
       } else if (this.position == 'bottom-right') {
+         this.pos = 'right-in';
          this.$el.style.alignSelf = 'flex-end';
          this.$el.style.bottom = '20px';
          this.$el.style.right = '20px';
-         if (!this.$el.classList.contains('right-in')) {
-               this.$el.classList.remove('right-out');
-               this.$el.classList.add('right-in');
-            }
+
          setTimeout( () => {
-            if (!this.$el.classList.contains('right-out')) {
-               this.$el.classList.remove('right-in');
-               this.$el.classList.add('right-out');
-            }
+          this.show = !this.show;
          }, Number(this.time));
+
       } else {
+         this.pos = 'top-center-in';
          this.$el.style.alignSelf = 'center';
          this.$el.style.top = '20px';
-         if (!this.$el.classList.contains('top-center-in')) {
-               this.$el.classList.remove('top-center-out');
-               this.$el.classList.add('top-center-in');
-            }
+
          setTimeout( () => {
-            if (!this.$el.classList.contains('top-center-out')) {
-               this.$el.classList.remove('top-center-in');
-               this.$el.classList.add('top-center-out');
-            }
+          this.show = !this.show;
          }, Number(this.time));
+
       }
       // =======================================
 
@@ -152,7 +166,7 @@ export default {
 @import "../assets/styles/variables";
 @import "../assets/styles/mixins";
 
-#my-toast{
+[id^=my-toast],[class^=my-toast]{
    min-height: 25px;
    display: flex;
    justify-content: center;
@@ -169,80 +183,85 @@ export default {
    @include border-radius(50px);
    @include box-shadow(0 0 3px 0px rgba(0,0,0,0.7));
    animation-delay: 4s;
-   @include opacity(0);
+  //  @include opacity(0);
+
+  @include animation(init,1s cubic-bezier(0.68,-0.55,.27,1.55) forwards);
+
+   @include keyframes (init) {
+         from { @include scale(0); @include opacity(0); }
+         to { @include scale(1); @include opacity(1); }
+      }
 
    // ====================== top-center
-   &.top-center-in{
+   &.top-center-in-enter-active{
       @include animation(top-center-in,1s cubic-bezier(0.68,-0.55,.27,1.55) forwards);
+   }
+   &.top-center-in-leave-active{
+      @include animation(top-center-out,1s cubic-bezier(0.68,-0.55,.27,1.55) forwards);
+   }
 
-      @include keyframes (top-center-in) {
+   @include keyframes (top-center-in) {
          from { @include translate(0,-100vh); @include opacity(0); }
          to { @include translate(0,0); @include opacity(1); }
       }
-   }
-
-   &.top-center-out {
-      @include animation(top-center-out,1s cubic-bezier(0.68,-0.55,.27,1.55) forwards);
 
       @include keyframes (top-center-out) {
          from { @include translate(0,0); @include opacity(1); }
          to { @include translate(0,-100vh); @include opacity(0); }
       }
-   }
    // ====================== left
-   &.left-in{
+   &.left-in-enter-active{
       @include animation(left-in,1s cubic-bezier(0.68,-0.55,.27,1.55) forwards);
+   }
+   &.left-in-leave-active{
+      @include animation(left-out,1s cubic-bezier(0.68,-0.55,.27,1.55) forwards);
+   }
 
       @include keyframes (left-in) {
          from { @include translate(-100vw,0); @include opacity(0); }
          to { @include translate(0,0); @include opacity(1); }
       }
-   }
-
-   &.left-out {
-      @include animation(left-out,1s cubic-bezier(0.68,-0.55,.27,1.55) forwards);
 
       @include keyframes (left-out) {
          from { @include translate(0,0); @include opacity(1); }
          to { @include translate(-100vw,0); @include opacity(0); }
       }
-   }
    // ====================== right
-   &.right-in{
+   &.right-in-enter-active{
       @include animation(right-in,1s cubic-bezier(0.68,-0.55,.27,1.55) forwards);
-
-      @include keyframes (right-in) {
-         from { @include translate(100vw,0); @include opacity(0); }
-         to { @include translate(0,0); @include opacity(1); }
-      }
    }
 
-   &.right-out {
+   &.right-in-leave-active{
       @include animation(right-out,1s cubic-bezier(0.68,-0.55,.27,1.55) forwards);
+   }
+
+   @include keyframes (right-in) {
+        from { @include translate(-100vw,0); @include opacity(0); }
+        to { @include translate(0,0); @include opacity(1); }
+    }
 
       @include keyframes (right-out) {
          from { @include translate(0,0); @include opacity(1); }
          to { @include translate(100vw,0); @include opacity(0); }
       }
-   }
    // ====================== bottom-center
-   &.bottom-center-in{
+   &.bottom-center-in-enter-active{
       @include animation(bottom-center-in,1s cubic-bezier(0.68,-0.55,.27,1.55) forwards);
+   }
 
-      @include keyframes (bottom-center-in) {
+   &.bottom-center-in-leave-active{
+      @include animation(bottom-center-out,1s cubic-bezier(0.68,-0.55,.27,1.55) forwards);
+   }
+
+   @include keyframes (bottom-center-in) {
          from { @include translate(0,100vh); @include opacity(0); }
          to { @include translate(0,0); @include opacity(1); }
       }
-   }
-
-   &.bottom-center-out {
-      @include animation(bottom-center-out,1s cubic-bezier(0.68,-0.55,.27,1.55) forwards);
 
       @include keyframes (bottom-center-out) {
          from { @include translate(0,0); @include opacity(1); }
          to { @include translate(0,100vh); @include opacity(0); }
       }
-   }
 
    // =================================
 
