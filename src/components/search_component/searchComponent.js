@@ -11,11 +11,14 @@ export default {
         apiimgerr: {
             type: Object,
         },
+        initloader: {
+            type: Boolean
+        }
     },
     data() {
         return {
             query: '',
-            err: {'msg':'',val: false},
+            err: {'msg':'','val': false},
             loading: false,
         }
     },
