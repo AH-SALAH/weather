@@ -23,7 +23,7 @@
       <!--search-comp-->
       <transition name="search-component" mode="out-in">
         <keep-alive>
-          <search-component @searching="searched($event)" :searching="searching" :apiimgerr="imgerr">
+          <search-component @searching="searched($event)" :searching="searching" :apiimgerr="imgerr" :initloader="initLoader">
           </search-component>
         </keep-alive>
       </transition>
@@ -503,11 +503,9 @@ export default {
             this.connection.msg = '';
             if (navigator.onLine == false) {
               this.connection.msg = 'You are Offline..! please,reconnect.. \n オフラインです。。また連絡してみて下さい。。(#-#)';
-              console.log("off = ",this.connection.off,"on = ",this.connection.on);
               this.connection.on = false;
               this.connection.off = true;
             }else{
-              console.log("on = ",this.connection.on,"off = ",this.connection.off);
                 this.connection.msg = 'Online..good! \n オンラインです。かっこいい。(^_-)';
               this.connection.off = false;
               this.connection.on = true;
