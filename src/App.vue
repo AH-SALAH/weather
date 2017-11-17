@@ -23,7 +23,7 @@
       <!--search-comp-->
       <transition name="search-component" mode="out-in">
         <keep-alive>
-          <search-component @searching="searched($event)" :searching="searching" :apiimgerr="imgerr" :initloader="initLoader">
+          <search-component @searching="searched($event)" :searching="searching" :apiimgerr="imgerr" :initLoader="initLoader">
           </search-component>
         </keep-alive>
       </transition>

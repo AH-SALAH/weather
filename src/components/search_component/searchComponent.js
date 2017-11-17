@@ -11,7 +11,7 @@ export default {
         apiimgerr: {
             type: Object,
         },
-        initloader: {
+        initLoader: {
             type: Boolean
         }
     },
