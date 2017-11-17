@@ -1,7 +1,8 @@
 <template v-cloak>
   <div id="app">
     <!--connection chk-->
-    <my-toast v-show="enter" position="top-right" :warning="!connection.val" :success="connection.val">{{ connection.val ? connection.msg+' &#10004;' : connection.msg+' &#9888;' }}</my-toast>
+    <my-toast v-if="connection.on" :position="'top-right'" :success="connection.on" :warning="connection.off" key="connection.on">{{ connection.msg+' &#10004;' }}</my-toast>
+    <my-toast v-if="connection.off" :position="'bottom-left'" :warning="connection.off" key="connection.off">{{ connection.msg+' &#9888;' }}</my-toast>
 
     <!--entry-comp-->
     <transition name="entry-fade" mode="out-in">
@@ -75,7 +76,7 @@ export default {
       enter: false,
       searching: { "val": false, "query": "", "loading": false },
       imgerr: { 'msg': '', 'val': false },
-      connection: { 'msg': '', 'val': false },
+      connection: { 'msg': '', 'on': false,'off': false,'val': true },
       wData: { //init data
         "latt_long": "30.049950,31.248600",
         "city": "Tokyo",
@@ -103,6 +104,7 @@ export default {
         }
       },
     }
+  
   },
   methods: {
     // when searching
@@ -364,15 +366,6 @@ export default {
   },
   created () {
     this.enter = !this.enter; // = true
-    // =========================================
-    // chk for connection..
-    this.connection.msg = navigator.onLine ? 'Connection is Online..good! \n オンラインです。かっこいい。(^_-)' : 'Connection is Offline..! please,reconnect.. \n オフラインです。。また連絡してみて下さい。。(#-#)';
-    this.connection.val = navigator.onLine ? true : false;
-
-    if (navigator.onLine == false) {
-      this.enter = true; 
-      return;
-    }
     //================================
     // initially get geo ip & upon it get weather detailes
     let self = this;
@@ -504,7 +497,26 @@ export default {
     } getImgs(); //getImgs()\\
 
   },
+  mounted () {
+    // ======================================
+    let chk = setInterval(() => {
+            this.connection.msg = '';
+            if (navigator.onLine == false) {
+              this.connection.msg = 'You are Offline..! please,reconnect.. \n オフラインです。。また連絡してみて下さい。。(#-#)';
+              console.log("off = ",this.connection.off,"on = ",this.connection.on);
+              this.connection.on = false;
+              this.connection.off = true;
+            }else{
+              console.log("on = ",this.connection.on,"off = ",this.connection.off);
+                this.connection.msg = 'Online..good! \n オンラインです。かっこいい。(^_-)';
+              this.connection.off = false;
+              this.connection.on = true;
+            }
+        },5000);
+
+  },
   updated() {
+    // ======================================
     // handle router event
     const pop_state = () => {
       window.onpopstate = () => {
