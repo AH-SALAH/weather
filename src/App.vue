@@ -23,7 +23,7 @@
       <!--search-comp-->
       <transition name="search-component" mode="out-in">
         <keep-alive>
-          <search-component @searching="searched($event)" :searching="searching" :apiimgerr="imgerr" :initLoader="initLoader">
+          <search-component @searching="searched($event)" :searching="searching" :apiimgerr="imgerr" :initLoader="initLoader" :placeName="placeName">
           </search-component>
         </keep-alive>
       </transition>
@@ -31,8 +31,14 @@
       <footer-component></footer-component>
       <!--weather-comp-->
       <transition name="weather-component" mode="in-out">
-        <weather-component ref="w_comp" :searching="searching" :wData="wData" v-show="searching.val" @closed="back($event)">
+        <weather-component ref="w_comp" :searching="searching" :wData="wData" v-show="searching.val" @closed="back($event)" @mapping="map($event)" :mapping="mapping">
         </weather-component>
+      </transition>
+
+      <!--map-->
+      <transition name="map-component" mode="out-in">
+        <map-component :lattLong="wData.latt_long" :mapping="mapping" v-show="mapping" @placeName="autoComplete($event)">
+        </map-component>
       </transition>
 
     </div> <!--/comps-wrapper-->
@@ -53,11 +59,14 @@ import headerComponent from './components/header_component/headerComponent.vue';
 import footerComponent from './components/footer_component/footerComponent.vue';
 import searchComponent from './components/search_component/searchComponent.vue';
 import weatherComponent from './components/weather_component/weatherComponent.vue';
+import mapComponent from './components/map_component/mapComponent.vue';
 import Myloader from './helperComponents/loader.vue';
 import entry from './helperComponents/entry.vue';
 import toast from './helperComponents/toast.vue';
 
 import axios from 'axios';
+
+// export const map_bus = new Vue();
 
 export default {
   components: {
@@ -65,6 +74,7 @@ export default {
     'footer-component': footerComponent,
     'search-component': searchComponent,
     'weather-component': weatherComponent,
+    'map-component': mapComponent,
     'my-loader': Myloader,
     'entry': entry,
     'my-toast': toast,
@@ -72,6 +82,8 @@ export default {
   name: 'app',
   data() {
     return {
+      placeName: '',
+      mapping: false,
       initLoader: false,
       enter: false,
       searching: { "val": false, "query": "", "loading": false },
@@ -115,9 +127,18 @@ export default {
         this.grabAPI(data.query);
       }
     },
+    // when searching get place name
+    autoComplete: function(place) {
+      this.placeName = place;
+    },
+    // when mapping get the value true|false
+    map: function(val) {
+      this.mapping = val;
+    },
     // when w-comp close btn emits
     back: function(data) {
-      this.searching.val = data.val;
+      this.searching.val = data.searchingVal;
+      this.mapping = data.mapping;
     },
     // do APIs
     grabAPI: function(qwery) {
@@ -289,7 +310,7 @@ export default {
           .catch(error => {
             console.log("get woeid err: ", error.message, error.headers);
             self.searching.val      = false;
-            self.imgerr.msg         = "Sorry,Something went wrong or WOEID didn't respond correctly..!";
+            self.imgerr.msg         = "Sorry,Something went wrong or WOEID didn't respond correctly..! \n you can try another single name..!";
             self.imgerr.val         = true;
             self.searching.loading  = false;
             self.initLoader         = false;
@@ -348,7 +369,7 @@ export default {
           .catch(error => {
             console.log("get weather details err: ", error.message, error.headers);
             self.searching.val      = false;
-            self.imgerr.msg         = "Sorry,Something went wrong or API didn't respond correctly..!";
+            self.imgerr.msg         = "Sorry,Something went wrong or API didn't respond correctly..! \n you can try another single name..!";
             self.imgerr.val         = true;
             self.searching.loading  = false;
             self.initLoader         = false;
@@ -498,7 +519,32 @@ export default {
 
   },
   mounted () {
+    let self = this;
+        // generate ggl srcmap
+        function gglmap_src() {
+            let el = document.createElement('script'),
+                lang = window.navigator.languages[1],
+                attrs = [{'src':'https://maps.googleapis.com/maps/api/js?key=AIzaSyC7HkqpB-JZagKJ-Q2KbfOftwy0yzTA904&libraries=places&amp;callback=initMap&amp;language=' + lang + ''},
+                    {'id':'ggl-map'},
+                    {'async': true},
+                    {'defer': true}
+                    ];
+
+                    attrs.map(function(obj){
+                        for (let key in obj) {
+                            if (obj.hasOwnProperty(key)) {
+                                el.setAttribute(key,obj[key]);
+                            }
+                        }
+                    });
+
+            if (!document.getElementById('ggl-map')) {
+                self.$el.appendChild(el);
+            }
+        } gglmap_src();
+
     // ======================================
+    // detect connection not real for dsl real connection it's pc connected or not connected detection
     let chk = setInterval(() => {
             this.connection.msg = '';
             if (navigator.onLine == false) {
@@ -506,11 +552,11 @@ export default {
               this.connection.on = false;
               this.connection.off = true;
             }else{
-                this.connection.msg = 'Online..good! \n オンラインです。かっこいい。(^_-)';
+                this.connection.msg = 'You are Online..good! \n also check your DSL connection..! \n オンラインです。かっこいい。DSLもチックして下さい。(^_-)';
               this.connection.off = false;
               this.connection.on = true;
             }
-        },5000);
+        },60000);
 
   },
   updated() {
