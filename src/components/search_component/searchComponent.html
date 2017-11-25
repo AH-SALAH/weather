@@ -1,8 +1,14 @@
 <div id="search-component">
-      <div class="search-group" :class="{'blur': searching.val,'back': !searching.val}">
-            <input ref="search_input" type="search" value="" v-model.trim="query"  placeholder="Search Cities.." name="search" @keyup.enter="submitting" :disabled="searching.val || initLoader" autofocus="true">
-            <i class="fa fa-search"></i>
+      <div class="query" :class="{'good':vali.good,'ok':vali.ok,'bad':vali.bad}">
+            <h6>{{ query }}</h6>
+            <span></span>
       </div>
+      <!--<form @submit.prevent="submitting">-->
+      <div class="search-group" :class="{'blur': searching.val,'back': !searching.val}">
+            <input id="search-input" ref="search_input" type="search" value="" v-model.trim="query"  placeholder="Search Cities.." name="search" @keyup="sign" :disabled="searching.val || initLoader" autofocus="true">
+            <button type="submit" @click.prevent="submitting"><i class="fa fa-search"></i></button>
+      </div>
+      <!--</form>-->
       <my-toast v-if="err.val" key="err.val" position="top-center" danger>{{ err.msg }}</my-toast>
-      <my-toast v-if="apiimgerr.val" key="apiimgerr.val" position="top-center" danger>{{ apiimgerr.msg }}</my-toast>
+      <my-toast v-if="apiimgerr.val" key="apiimgerr.val" position="top-center" time="10000" danger>{{ apiimgerr.msg }}</my-toast>
 </div>
