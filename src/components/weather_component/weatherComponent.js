@@ -1,7 +1,4 @@
-import mapComponent from './map_component/mapComponent.vue';
-
 export default {
-    components: { 'map-component': mapComponent },
     props: {
         searching: {
             type: Object,
@@ -9,21 +6,21 @@ export default {
         wData: {
             type: Object,
         },
+        mapping: {
+            type: Boolean,
+        },
 
     },
     data() {
         return {
             now: new Date().toLocaleDateString(),
-            mapping: false,
             tomorrow: false,
             f_checked: '',
         }
     },
     methods: {
         closeWeather: function () {
-            this.$emit('closed', !this.searching.val);
-            this.searching.val = false;
-            this.mapping = false;
+            this.$emit('closed', {'searchingVal':false,'mapping':false});
             let p = location.pathname.toString().trim().toLocaleLowerCase();
             if (p.lastIndexOf('/showweather') > -1) {
                 let np = p.replace('/showweather','/');
@@ -31,7 +28,7 @@ export default {
             }
         },
         showMap: function () {
-            this.mapping = !this.mapping;
+            this.$emit('mapping',!this.mapping);
         },
         showTomorrow: function () {
             this.tomorrow = !this.tomorrow;
@@ -109,34 +106,6 @@ export default {
                 }
             }
         } l_info_pos_solve();
-
-    },
-    mounted() {
-        let self = this;
-        // generate ggl srcmap
-        function gglmap_scr() {
-            let el = document.createElement('script'),
-                lang = window.navigator.languages[1],
-                attrs = [{'src':'https://maps.googleapis.com/maps/api/js?key=AIzaSyC7HkqpB-JZagKJ-Q2KbfOftwy0yzTA904&amp;callback=initMap&amp;language=' + lang + ''},
-                    {'id':'ggl-map'},
-                    {'async': true},
-                    {'defer': true}
-                    ];
-
-                    attrs.map(function(obj){
-                        for (let key in obj) {
-                            if (obj.hasOwnProperty(key)) {
-                                el.setAttribute(key,obj[key]);
-                            }
-                        }
-                    });
-
-            if (!document.getElementById('ggl-map')) {
-                self.$parent.$parent.$el.appendChild(el);
-            }
-        } gglmap_scr();
-
-        // ===========================
 
     },
 }

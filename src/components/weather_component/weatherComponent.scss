@@ -831,16 +831,17 @@
 }
 
 .r-slide-enter-active{
-   @include animation(r-slide,1.5s ease-out forwards 0.5s);
+   @include animation(r-slide,1.7s ease-out forwards 0.9s);
 }
 
 .r-slide-leave-active{
-   @include animation(r-slide,0.6s ease-in forwards reverse 0s);
+   @include animation(r-slide,0.8s ease-in forwards reverse 0s);
 }
 
    @include keyframes (r-slide) {
       0%{ @include generic-transform( perspective(500px) rotate3d(0, 1, 0, 3deg) translate(200%, 0) ); @include opacity(0); }
-      100%{@include generic-transform( perspective(500px) rotate3d(0,0,0,0deg) translate(0,0) ); @include opacity(1); }
+      10%{ @include generic-transform( perspective(500px) rotate3d(0,1,0,1deg) translate(100%,0) ); @include opacity(1); }
+      100%{ @include generic-transform( perspective(500px) rotate3d(0,0,0,0deg) translate(0,0) ); @include opacity(1); }
    }
 // ----------------------------------
 .l-slide-enter,.l-slide-leave-to{
@@ -848,7 +849,7 @@
 }
 
 .l-slide-enter-active{
-   @include animation(l-slide,1.7s ease-out forwards 0.5s);
+   @include animation(l-slide,2s ease-out forwards 0.9s);
 }
 
 .l-slide-leave-active{
@@ -856,8 +857,9 @@
 }
 
    @include keyframes (l-slide) {
-      0%{ @include generic-transform( perspective(500px) rotate3d(0, -1, 0, 3deg) translate(-200%, 0) ); @include opacity(0); }     
-      100%{@include generic-transform( perspective(500px) rotate3d(0,0,0,0deg) translate(0,0) ); @include opacity(1); }
+      0%{ @include generic-transform( perspective(500px) rotate3d(0, -1, 0, 3deg) translate(-200%, 0) ); @include opacity(0); }
+      10%{ @include generic-transform( perspective(500px) rotate3d(0,-1,0,1deg) translate(-100%,0) ); @include opacity(1); }     
+      100%{ @include generic-transform( perspective(500px) rotate3d(0,0,0,0deg) translate(0,0) ); @include opacity(1); }
    }
    /** ----------------------------*/
 
@@ -865,7 +867,7 @@
    @include animation(w-slide-fade,1.5s ease-in forwards);
 }
 .weather-component-leave-active{
-   @include animation(w-slide-fade,2s ease-out forwards reverse 1s);
+   @include animation(w-slide-fade,1s ease-out forwards reverse 2.5s);
 }
    @include keyframes (w-slide-fade) {
       0%{ @include opacity(0); }
@@ -876,31 +878,16 @@
    @include opacity(0);
 }
 .wrapper-component-enter-active{
-   @include animation(wr-slide-fade,1s ease forwards);
+   @include animation(wr-slide-fade,1.5s ease forwards);
 }
 .wrapper-component-leave-active{
-   @include animation(wr-slide-fade,1s ease forwards reverse 0.6s);
+   @include animation(wr-slide-fade,2s ease forwards reverse 0.1s);
 }
    @include keyframes (wr-slide-fade) {
-      0%{width:2px; height: 2px; padding: 0; @include translate(0,5px); @include opacity(0);}
+      0%{width:0px; height: 0px; padding: 0; @include translate(0,5px); @include opacity(0);}
       5%{width:5px; height: 5px; padding: 0; @include translate(0,2px); @include opacity(1);}
       50%{width:70%; height: 5px; padding: 0; @include translate(0,0); @include opacity(1);}
       100%{width:70%; height: 80%; padding: 50px 100px; @include translate(0,0); @include opacity(1);}
-   }
-   /** ----------------------------*/
-
-.map-component-enter-active{
-   @include animation(map-slide-fade,1.2s ease-in forwards);
-}
-.map-component-leave-active{
-   @include animation(map-slide-fade,1.2s ease-out forwards reverse);
-}
-   @include keyframes (map-slide-fade) {
-      0%{width:2px; height: 2px; @include translate(0,-5px); @include opacity(0);}
-      15%{width:5px; height: 5px; @include translate(0,-3px); @include opacity(1);}
-      40%{width:60%; height: 5px; @include translate(0,0); @include opacity(1);}
-      65%{width:60%; height: 70%; @include translate(0,0); @include opacity(1);}
-      100%{width:60%; height: 70%; @include translate(0,0); @include opacity(1);}
    }
 
       /** ----------------------------*/
