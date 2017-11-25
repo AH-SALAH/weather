@@ -23,7 +23,7 @@ export default {
             query: '',
             vali: {'good':false,'ok':false,'bad':false},
             err: {'msg':'','val': false},
-            loading: false,
+            loading: false
         }
     },
     methods: {
@@ -50,7 +50,7 @@ export default {
             }
             // ==================
 
-        },
+        }
 
     },
     computed: {

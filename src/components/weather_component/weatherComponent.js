@@ -8,14 +8,14 @@ export default {
         },
         mapping: {
             type: Boolean,
-        },
+        }
 
     },
     data() {
         return {
             now: new Date().toLocaleDateString(),
             tomorrow: false,
-            f_checked: '',
+            f_checked: ''
         }
     },
     methods: {
@@ -107,5 +107,5 @@ export default {
             }
         } l_info_pos_solve();
 
-    },
+    }
 }

@@ -22,15 +22,13 @@ export default {
                 autocomplete = new google.maps.places.Autocomplete(input,options);
 
                 autocomplete.addListener('place_changed', () => {
-                    let place   = autocomplete.getPlace()/*,
-                        h6      = document.getElementById('search-component').querySelector('.query h6')*/;
+                    let place   = autocomplete.getPlace();
 
                     if (place.length == 0) {
                         return;
                     }
                     self.$emit('placeName',place.name);
                     input.value = place.name;
-                    // h6 ? h6.textContent = place.name : '';
                 });
             }
             ggl_autoComplete();
@@ -266,26 +264,6 @@ export default {
             // centerControlDiv.style.right = '45px';
             map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
 
-            // function ggl_autoComplete() {
-            //     let input = document.getElementById('search-input'),
-            //         options = {
-            //             type: ['(cities)']
-            //         },
-            //         autocomplete = new google.maps.places.Autocomplete(input,options);
-
-            //         autocomplete.addListener('place_changed', () => {
-            //             let place = autocomplete.getplace();
-
-            //             if (place.length == 0) {
-            //                 return;
-            //             }
-
-            //             input.value = place.name;
-            //             self.parentElement.previousSibling.getElementsByTagName('h6') ? self.parentElement.previousSibling.getElementsByTagName('h6').textContent = place.name: '';
-            //         });
-            // }
-            // ggl_autoComplete();
-
             window.onload = () => {
                google.maps.event.trigger(map, 'resize');
                google.maps.event.trigger(self.ggl_autoComplete, 'resize');
@@ -297,8 +275,8 @@ export default {
 
          }
 
-      }, // mapping
+      } // mapping
 
-   },
+   }
 
 }

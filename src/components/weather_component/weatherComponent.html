@@ -5,7 +5,7 @@
   <transition name="list-slide" mode="out-in">
     <ul class="list-btns" ref="w_menu_list" v-show="searching.val">
       <li :class="{'active': mapping,'conditional': mapping}" :li-title="mapping ? ' Hide Map \n マップをハイド':' Show Map \n マップを見せる'">
-        <button type="button" class="map-btn" :class="{'btn-after-enter': mapping,'btn-after-leave': !mapping}" @click="showMap">
+        <button type="button" class="map-btn" :class="{'btn-after-enter': mapping,'btn-after-leave': !mapping}" @click="showMap()">
             <i class="fa fa-map-marker" :class="{'map-btn-icon-enter': mapping,'map-btn-icon-leave': !mapping}" aria-hidden="true"></i>
         </button>
       </li>
