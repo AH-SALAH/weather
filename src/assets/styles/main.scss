@@ -260,3 +260,10 @@ html{
 	0%{ @include opacity(0); }
 	100%{ @include opacity(1); }
 }
+
+// ===========================
+// ggl autocomplete custom style
+
+.pac-container{
+	background-color: rgba(220, 255, 220, 1);
+}
