@@ -1,6 +1,6 @@
 <template>
    <div id="entry">
-      <img ref="entry_img" src="../assets/imgs/umbrella.jpg" alt="weatherUmbrella"/>
+      <img ref="entry_img" src="../assets/imgs/umbrella.jpg" alt="weatherUmbrella" v-show="loaded"/>
       <transition name="entry-cont" mode="out-in">
             <div class="entry-content" v-show="loaded" :notEnter="notEnter">
                   <transition name="entry-child" mode="out-in">
@@ -58,6 +58,7 @@ export default {
    display: flex;
    align-items: center;
    justify-content: center;
+   @include bg-linear(rgba(173, 216, 230,1),to bottom,#fff 20%,rgba(173, 216, 230,1) 80%); //lightblue
    @include transition(all 1s ease);
 
    & img{
