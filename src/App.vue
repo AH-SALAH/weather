@@ -552,7 +552,7 @@ export default {
               this.connection.on = false;
               this.connection.off = true;
             }else{
-                this.connection.msg = 'You are Online..good! \n also check your DSL connection..! \n オンラインです。かっこいい。DSLもチックして下さい。(^_-)';
+              this.connection.msg = 'You are Online..good! \n also check your DSL connection..! \n オンラインです。かっこいい。DSLもチックして下さい。(^_-)';
               this.connection.off = false;
               this.connection.on = true;
             }
