@@ -70,12 +70,14 @@ export default {
          max-width: 100%;
          height: 100%;
          background-color: rgba(255,255,255,0.9);
+         @include opacity(0);
          @include transition(all 0.7s ease);
 
          @include animation(entry-img,0.5s cubic-bezier(0.3,-0.3,0,1.3) forwards);
 
             @include keyframes (entry-img) {
-                  100%{ @include filter(blur(1px) grayscale(0.3)); }
+                  0%{ @include opacity(0); }
+                  100%{ @include filter(blur(1px) grayscale(0.3)); @include opacity(1); }
             }
    }
 
