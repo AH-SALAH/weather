@@ -15,10 +15,16 @@
 
 }
 
-@mixin bg-linear-gradient($color, $args...) {
+@mixin bg-linear($color, $args...) {
   background: $color;
   background: -webkit-linear-gradient($args);
   background: linear-gradient($args);
+}
+
+@mixin bg-radial($color, $args...) {
+  background: $color;
+  background: -webkit-radial-gradient($args);
+  background: radial-gradient($args);
 }
 
 @mixin bg-color-rgba($args...){
