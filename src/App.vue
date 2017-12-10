@@ -490,9 +490,9 @@ export default {
                   miniCarousel.init(pics);
 
                   // getGeo after imgs loaded
-                  for(let j = 0; j < pics.length; j++){
+                  for(let j = pics.length-1; j > 0; j--){
                     pics[j].onload = () => {
-                      if(j == pics.length-1) getGeo();
+                      if(j == 1 && pics[j].complete) getGeo();
                     }
                   }
 
