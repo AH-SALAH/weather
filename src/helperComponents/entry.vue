@@ -1,6 +1,6 @@
 <template>
    <div id="entry">
-      <img ref="entry_img" src="../assets/imgs/umbrella.jpg" alt="weatherUmbrella" v-show="loaded"/>
+      <img ref="entry_img" src="../assets/imgs/umbrella.jpg" alt="weatherUmbrella" v-show="imgShow"/>
       <transition name="entry-cont" mode="out-in">
             <div class="entry-content" v-show="loaded" :notEnter="notEnter">
                   <transition name="entry-child" mode="out-in">
@@ -23,7 +23,8 @@ export default {
    },
    data () {
       return {
-            loaded: false
+            loaded: false,
+            imgShow: false
       }
    },
    computed: {
@@ -34,6 +35,7 @@ export default {
    mounted () {
       this.$refs.entry_img.onload = () => { 
             this.loaded = !this.loaded;
+            this.imgShow = !this.imgShow;
       }
    },
    
