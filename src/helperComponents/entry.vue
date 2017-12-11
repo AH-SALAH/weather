@@ -29,13 +29,13 @@ export default {
    },
    computed: {
          notEnter: function () {
-                  return this.enter == false ? this.loaded = false : this.loaded;
+            return this.enter == false ? this.loaded = false : this.loaded;
          }
    },
    mounted () {
       this.$refs.entry_img.onload = () => { 
-            this.loaded = !this.loaded;
             this.imgShow = !this.imgShow;
+            setTimeout(() => { this.loaded = true; },500);
       }
    },
    
@@ -76,10 +76,10 @@ export default {
          @include opacity(0);
          @include transition(all 0.7s ease);
 
-         @include animation(entry-img,0.5s cubic-bezier(0.3,-0.3,0,1.3) forwards);
+         @include animation(entry-img,0.5s ease forwards);
 
             @include keyframes (entry-img) {
-                  0%{ @include opacity(0); }
+                  0%{ @include filter(blur(0px) grayscale(0)); @include opacity(0); }
                   100%{ @include filter(blur(1px) grayscale(0.3)); @include opacity(1); }
             }
    }
@@ -134,7 +134,7 @@ export default {
       @include animation(entry-child,2s cubic-bezier(0.3,-0.3,0,1.3) forwards);
 }
 .entry-child-leave-active{
-      @include animation(entry-child,2s cubic-bezier(0.3,-0.3,0,1.3) forwards reverse);
+      @include animation(entry-child,1.7s cubic-bezier(0.3,-0.3,0,1.3) forwards reverse);
 }
 
 @include keyframes (entry-child) {
