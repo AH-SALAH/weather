@@ -10,11 +10,16 @@
 - [Axios](https://github.com/axios/axios)
 - [Font Awesome](https://fontawesome.io)
 - [Weather-icons](http://erikflowers.github.io/weather-icons/)
+- css-flexbox
 
 <strong>- API :</strong>
 
 - [wikipedia](https://en.wikipedia.org)
 - [metaweather](https://www.metaweather.com)
+- [googlemap](https://maps.googleapis.com)
+- [yahoo](https://yahooapis.com)
+- [freegeoip](https://freegeoip.net)
+- [picjumbo](http://picjumbo.com)
 
 ---
 
