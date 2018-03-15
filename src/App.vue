@@ -155,20 +155,20 @@ export default {
           url: cors_api_url + req_url,
           transformResponse: (response) => {
             response    = response.replace(/^\/\*\*\/\(/i, ''),
-              response  = response.replace(/\)$/mi, '');
+            response    = response.replace(/\)$/mi, '');
             if (typeof(response) == String) {
               response = JSON.parse(response);
             }
             return response;
           }
         }).then((response) => {
-          let n0    = response.data.substring(response.data.indexOf('"images"')),
+          let n0    = response.data.substring(response.data.indexOf('"images":'),response.data.search(/}}}}$/g)).replace(/"images":/i,''),
               fn    = new RegExp('' + q + '', 'gi'),
               nuarr = [],
               res,
-              n     = JSON.parse(JSON.stringify(n0)).split('},'),
+              n     = (typeof(response.data) == String) ? JSON.parse(n0) : n0,
               pat   = /\.(jpg|jpeg|png|gif|svg)\b/gi,
-              cked  = n.filter(function(d) { return d.match(pat); });
+              cked  = n.split('},').filter(function(d) { return d.match(pat); });
 
           cked.forEach(function(v) {
             let patt  = v.match(/\.(jpg|jpeg|png|gif|svg)\b/gi),
@@ -445,23 +445,33 @@ export default {
             }
             // ----------------------------//
 
-      axios.get('https://picjumbo.com/api/v1/')
-        .then(function(response) {
+      axios({
+          url: 'https://picjumbo.com/api/v1/',
+          method: 'GET',
+          // responseType:'arraybuffer'
+          // transformResponse: (response) => {
+          //     if (typeof(response) == String) {
+          //       response = JSON.parse(response);
+          //     }
+          //     return response;
+          // }
+        }).then(function(response) {
             let data    = response.data,
                 body    = document.getElementsByTagName("body")[0],
                 bg      = document.getElementById("bg"),
                 cat_url = [],
                 new_arr = [],
                 pics;
+
                 // handle & filter the data
               data.forEach(function(el, i) {
-                let cat = el.category,
-                    url = el.thumb_url;
+                  let cat = el.category,
+                      url = el.thumb_url;
 
-                if (cat.slug == "nature" && url.indexOf('1080x720') > -1) {
-                  cat_url.push({ "i": i, "url": el.thumb_url });
-                  return new_arr = cat_url.slice(0, cat_url.length >= 11 ? 11 : cat_url.length);
-                }
+                  if (cat.slug == "nature" /*&& url.indexOf('1080x720') > -1*/) {
+                    cat_url.push({ "i": i, "url": url });
+                    return new_arr = cat_url.slice(0, cat_url.length >= 11 ? 11 : cat_url.length);
+                  }
               });
 
             if (new_arr.length > 0) {
@@ -512,7 +522,7 @@ export default {
           getGeo();
           self.initLoader = false;
           // if bg err set a static bg instead as a fallback..
-          document.getElementById("bg").style.background = 'rgba(0,0,0,0.7) url("dist/src/assets/imgs/umbrella.jpg") no-repeat fixed center center/cover';
+          document.getElementById("bg").style.background = 'rgba(0,0,0,0.7) url("dist/imgs/umbrella.jpg") no-repeat fixed center center/cover !important';
         });
 
     } getImgs(); //getImgs()\\
