@@ -156,9 +156,9 @@ export default {
           transformResponse: (response) => {
             response    = response.replace(/^\/\*\*\/\(/i, ''),
             response    = response.replace(/\)$/mi, '');
-            if (typeof(response) == String) {
-              response = JSON.parse(response);
-            }
+            //if (typeof(response) == 'string') {
+              //response = JSON.parse(response);
+            //}
             return response;
           }
         }).then((response) => {
@@ -189,7 +189,7 @@ export default {
             res = nuarr[Math.floor(Math.random() * 2)];
           }
           else {
-            res = f[Math.floor(Math.random() * 2)];
+            res = f[Math.floor(Math.random() * 2)] || f[0];
           }
           // do get img link here with the returned img file name
           getImageLink(res);
@@ -219,9 +219,9 @@ export default {
           transformResponse: (response) => {
             response = response.replace(/^\/\*\*\/\(/i, ''),
             response = response.replace(/\)$/mi, '');
-            if (typeof(response) == String) {
-              response = JSON.parse(response);
-            }
+            //if (typeof(response) == 'string') {
+              //response = JSON.parse(response);
+            //}
             return response;
           }
         }).then((response) => {
@@ -232,10 +232,10 @@ export default {
               url;
           // get the thumb
           if (url1.indexOf("commons") > -1) {
-            let u = url1.split('/'),
-                r = u.splice(u.indexOf("commons") + 1, 0, "thumb"),
-                l = u.push("550px-" + u[u.length - 1]);
-              url = u.join('/');
+            //let u = url1.split('/'),
+                //r = u.splice(u.indexOf("commons") + 1, 0, "thumb"),
+                //l = u.push("550px-" + u[u.length - 1]);
+              url = url1;//u.join('/');
           } else {
             url = '';
           }
@@ -279,9 +279,9 @@ export default {
         axios.get(cors_api_url + req_url, { datatype: 'json' })
           .then((response) => {
 
-            let woe   = (response.data && response.data.query.results.place[0].woeid) || response.data[0].woeid,
-                ccode = (response.data && response.data.query.results.place[0].country.code) || ccodeName,
-              createdd = (response.data && && response.data.query.created) || new Date().toISOString(),
+            let woe   = (response.data && response.data.query && response.data.query.results.place[0].woeid) || response.data[0].woeid,
+                ccode = (response.data && response.data.query && response.data.query.results.place[0].country.code) || ccodeName,
+              createdd = (response.data && response.data.query && response.data.query.created) || new Date().toISOString(),
               created  = createdd.slice(0, createdd.lastIndexOf("-") + 3),
               storage = JSON.parse(localStorage.getItem('wData'));
 
@@ -295,7 +295,7 @@ export default {
               self.searching.loading  = false; // remove loading
               self.initLoader         = false; // remove initloader
               history.pushState({ data: self.searching.val }, '', 'showweather'); //handle piece of router
-              console.log("storage-parsed: ");
+              //console.log("storage-parsed: ");
               return false;
             } else {
               // delete the stroage to avoid any err caused by any new modification in the source of truth data
@@ -364,7 +364,7 @@ export default {
             self.searching.loading  = false; //remove loading
             self.initLoader         = false; //remove initloader
 
-            console.log("w-details: success");
+            //console.log("w-details: success");
           })
           .catch(error => {
             console.log("get weather details err: ", error.message, error.headers);
@@ -395,7 +395,7 @@ export default {
       let cors_api_url  = "https://cors-anywhere.herokuapp.com/",
           req_url       = "https://freegeoip.app/json/";
 
-      axios.get(cors_api_url + req_url)
+      axios.get(/*cors_api_url +*/ req_url)
         .then((response) => {
           self.grabAPI(response.data.city, response.data.country_code);
           self.enter = !self.enter; // = false
@@ -522,8 +522,8 @@ export default {
           getGeo();
           self.initLoader = false;
           // if bg err set a static bg instead as a fallback..
-          let url = "https://images.wallpaperscraft.com/image/rain_wood_river_bad_weather_48422_1024x768.jpg" || "dist/imgs/umbrella.jpg";
-          document.getElementById("bg").style.background = 'rgba(0,0,0,0.7) url('+url+') no-repeat fixed center center/cover';
+          let url = "https://images.wallpaperscraft.com/image/mountains_sea_ocean_clouds_night_96938_1024x768.jpg" || "dist/imgs/umbrella.jpg";
+          document.getElementById("bg").style.background = 'rgba(0,0,0,0.7) url('+url+') no-repeat fixed center bottom/cover';
         });
 
     } getImgs(); //getImgs()\\
