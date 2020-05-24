@@ -392,10 +392,10 @@ export default {
     let self = this;
 
     function getGeo() {
-      let cors_api_url  = "https://cors-anywhere.herokuapp.com/",
+      let cors_api_url  = "https://cors-anywhere.herokuapp.com/", // just in production to pass :BLOCKED_BY_CLIENT ERR
           req_url       = "https://freegeoip.app/json/";
 
-      axios.get(/*cors_api_url +*/ req_url)
+      axios.get(cors_api_url + req_url)
         .then((response) => {
           self.grabAPI(response.data.city, response.data.country_code);
           self.enter = !self.enter; // = false
