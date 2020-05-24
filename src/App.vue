@@ -141,7 +141,7 @@ export default {
       this.mapping = data.mapping;
     },
     // do APIs
-    grabAPI: function(qwery) {
+    grabAPI: function(qwery, ccodeName) {
       // =================================
       let self = this;
       // get query matched img file name from wikipedia
@@ -274,14 +274,14 @@ export default {
       // get woeid from yahoo api
       function getWOEID(q) {
         let cors_api_url  = "https://cors-anywhere.herokuapp.com/",
-            req_url       = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.places%20where%20text%3D%22" + encodeURIComponent(q) + "%22&format=json";
+            req_url       = "https://www.metaweather.com/api/location/search/?query="+encodeURIComponent(q); //"https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.places%20where%20text%3D%22" + encodeURIComponent(q) + "%22&format=json";
 
         axios.get(cors_api_url + req_url, { datatype: 'json' })
           .then((response) => {
 
-            let woe   = response.data.query.results.place[0].woeid,
-                ccode = response.data.query.results.place[0].country.code,
-              createdd = response.data.query.created,
+            let woe   = (response.data && response.data.query.results.place[0].woeid) || response.data[0].woeid,
+                ccode = (response.data && response.data.query.results.place[0].country.code) || ccodeName,
+              createdd = (response.data && && response.data.query.created) || new Date().toISOString(),
               created  = createdd.slice(0, createdd.lastIndexOf("-") + 3),
               storage = JSON.parse(localStorage.getItem('wData'));
 
@@ -393,11 +393,11 @@ export default {
 
     function getGeo() {
       let cors_api_url  = "https://cors-anywhere.herokuapp.com/",
-          req_url       = "http://freegeoip.net/json/";
+          req_url       = "https://freegeoip.app/json/";
 
       axios.get(cors_api_url + req_url)
         .then((response) => {
-          self.grabAPI(response.data.city);
+          self.grabAPI(response.data.city, response.data.country_code);
           self.enter = !self.enter; // = false
           // self.initLoader = !self.initLoader;
         })
@@ -522,7 +522,8 @@ export default {
           getGeo();
           self.initLoader = false;
           // if bg err set a static bg instead as a fallback..
-          document.getElementById("bg").style.background = 'rgba(0,0,0,0.7) url("dist/imgs/umbrella.jpg") no-repeat fixed center center/cover !important';
+          let url = "https://images.wallpaperscraft.com/image/rain_wood_river_bad_weather_48422_1024x768.jpg" || "dist/imgs/umbrella.jpg";
+          document.getElementById("bg").style.background = 'rgba(0,0,0,0.7) url('+url+') no-repeat fixed center center/cover';
         });
 
     } getImgs(); //getImgs()\\
