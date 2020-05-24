@@ -84,7 +84,7 @@ export default {
     return {
       placeName: '',
       mapping: false,
-      initLoader: false,
+      initLoader: true,
       enter: false,
       searching: { "val": false, "query": "", "loading": false },
       imgerr: { 'msg': '', 'val': false },
