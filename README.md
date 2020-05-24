@@ -2,7 +2,7 @@
 
 > Simple vue.js Weather App, ..inspired by ![Al Jazeera](https://upload.wikimedia.org/wikipedia/en/7/71/Aljazeera.svg "Al Jazeera")
 
-- [App](http://weather.is-great.org)
+- [App](https://ah-salah.github.io/weather/)
 
 <strong>- Nice Tech Used:</strong>
 
